@@ -19,9 +19,9 @@ class CounterComponent extends Component {
 }
 CounterComponent.propTypes = {
     caption: PropTypes.string.isRequired,
-    onIncrement: PropTypes.func.isRequired,
-    onDecrement: PropTypes.func.isRequired,
-    value: PropTypes.number.isRequired
+    onIncrementButton: PropTypes.func.isRequired,
+    onDecrementButton: PropTypes.func.isRequired,
+    count: PropTypes.number.isRequired
 };
 
 class CounterContainer extends Component{
@@ -52,6 +52,11 @@ class CounterContainer extends Component{
         this.setState(this.getOwnState());
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return (nextProps.caption !== this.props.caption) ||
+            (nextState.count !== this.state.count);
+    }
+
     componentDidMount(){
         store.subscribe(this.onChange);
     }
@@ -61,14 +66,17 @@ class CounterContainer extends Component{
     }
 
     render() {
-        return (
-            <CounterComponent caption={this.props.caption}
-                              onIncrementButton={this.onIncrementButton()}
-                              onDecrementButton={this.onDecrementButton()}
-                              count={this.state.count}
-            />
-        );
+        return <CounterComponent caption={this.props.caption}
+                          onIncrementButton={this.onIncrementButton}//this.onIncrementButton()错误
+                          onDecrementButton={this.onDecrementButton}
+                          count={this.state.count} />
+
     }
 }
+
+
+CounterContainer.propTypes = {
+    caption: PropTypes.string.isRequired
+};
 
 export default CounterContainer;
